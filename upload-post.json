@@ -13,7 +13,7 @@
     },
     {
       "parameters": {
-        "url": "https://videos.pexels.com/video-files/32573388/13889898_1440_2560_30fps.mp4",
+        "url": "https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/42dcdfdf-d310-493d-9f17-2d9e8906d290.mp4",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -58,7 +58,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -340,
+        -420,
         800
       ],
       "typeVersion": 1,
