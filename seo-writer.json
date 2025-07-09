@@ -1,0 +1,739 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        80
+      ],
+      "id": "9fc8a757-7553-40d6-ad0a-8f228021faf2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "seo-writer",
+          "mode": "list",
+          "cachedResultName": "seo-writer"
+        },
+        "options": {
+          "pineconeNamespace": "DataPlace"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.2,
+      "position": [
+        1960,
+        -20
+      ],
+      "id": "afba2515-3d45-4c1a-9c88-710122152e4e",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "GKbK75Aknrk33ZPA",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1880,
+        200
+      ],
+      "id": "8b7b33f3-066b-4801-ab90-f604e6f4b294",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        2060,
+        220
+      ],
+      "id": "0f83d35f-ac34-43db-98db-48516b5ddc28",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "chunkSize": 2000,
+        "chunkOverlap": 200,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        2160,
+        400
+      ],
+      "id": "a28ad46d-67f2-4d85-b917-55139ef86dce",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -200,
+        740
+      ],
+      "id": "1af08576-1d39-4e49-aed7-d416e82c9f98",
+      "name": "When chat message received",
+      "webhookId": "e1468e34-9acc-472e-9bd4-8cee0c3d1e17"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').first().json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        540,
+        960
+      ],
+      "id": "0391cf2e-92df-4c35-9550-2ca8737d0501",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').first().json.chatInput }}",
+        "options": {
+          "systemMessage": "=Use the following context to answer the user's question.\n<context>\n{{\n$input.all()\n  .map(item => item.json.document.pageContent)\n  .join('\\n---\\n')\n}}\n</context>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        400,
+        740
+      ],
+      "id": "af07904d-7072-4752-8732-8dcddba8f74c",
+      "name": "AI Agent1",
+      "alwaysOutputData": false,
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "seo-writer",
+          "mode": "list",
+          "cachedResultName": "seo-writer"
+        },
+        "prompt": "={{ $json.chatInput }}",
+        "options": {
+          "pineconeNamespace": "DataPlace"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.2,
+      "position": [
+        20,
+        740
+      ],
+      "id": "9ecbdd3b-b018-40d6-88ed-32718f91cb59",
+      "name": "Pinecone Vector Store3",
+      "credentials": {
+        "pineconeApi": {
+          "id": "GKbK75Aknrk33ZPA",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/embedding-001"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        120,
+        960
+      ],
+      "id": "caec613b-39f4-4761-bf7b-24068a69d2fb",
+      "name": "Embeddings Google Gemini3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        420,
+        960
+      ],
+      "id": "3ce5f61d-6695-4b82-8b83-8eae272c1706",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const md = $input.first().json['0'].markdown; \n\n  if (typeof md !== 'string') {\n    console.warn('Markdown content is not a string:', md);\n    return {\n      json: {\n        title: '',\n        mainContent: '',\n        extractedLinks: [],\n        error: 'Markdown content is not a string'\n      }\n    };\n  }\n\n  const articleTitleMatch = md.match(/^#\\s*(.*)/m);\n  const title = articleTitleMatch ? articleTitleMatch[1].trim() : 'No Title Found';\n\n  let mainContent = md.replace(/^#\\s*.*(\\r?\\n)+/, '').trim();\n\n  const extractedLinks = \n  // The negative lookahead `(?!#)` ensures '#' is not matched after the base URL,\n  // or a more robust way is to specifically stop before the '#'\n  const linkRegex = /\\[([^\\]]+)\\]\\((https?:\\/\\/[^\\s#)]+)\\)/g; \n  let match;\n  while ((match = linkRegex.exec(mainContent))) {\n    extractedLinks.push({\n      text: match[1].trim(),\n      url: match[2].trim(),\n    });\n  }\n\n  return {\n    json: {\n      title,\n      mainContent,\n      extractedLinks,\n    },\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        280,
+        80
+      ],
+      "id": "3b26db77-ca0c-4c12-8070-d5274b293238",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "extractedLinks",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        500,
+        80
+      ],
+      "id": "b44e2f02-b8e9-42df-9964-875d81736f4a",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "resource": "crawler",
+        "operation": "crawl",
+        "url": "https://markmanson.net/articles",
+        "limitCrawlPages": 1
+      },
+      "type": "n8n-nodes-scrapeless.scrapeless",
+      "typeVersion": 1,
+      "position": [
+        60,
+        80
+      ],
+      "id": "a9f38512-748b-4a87-8e7a-c2047c3cb99a",
+      "name": "Scrapeless4",
+      "credentials": {
+        "scrapelessApi": {
+          "id": "DbJdKjugySpBs3Sc",
+          "name": "Scrapeless account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "crawler",
+        "url": "={{ $json.url }}"
+      },
+      "type": "n8n-nodes-scrapeless.scrapeless",
+      "typeVersion": 1,
+      "position": [
+        1060,
+        180
+      ],
+      "id": "15d7c1f2-35ef-430c-b524-a960020b7e38",
+      "name": "Scrapeless5",
+      "credentials": {
+        "scrapelessApi": {
+          "id": "DbJdKjugySpBs3Sc",
+          "name": "Scrapeless account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "include": "specifiedFields",
+        "fieldsToInclude": "markdown",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1480,
+        -20
+      ],
+      "id": "c7bdfe03-bb71-458f-b16c-615200241ade",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1720,
+        -20
+      ],
+      "id": "c64949b4-0c32-434a-a95a-706352560ccb",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "content": "# Scrape and Crawl website for knowledge",
+        "height": 700,
+        "width": 1680
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "ef6d4218-2776-48bb-a57b-f5c4447ac280",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Create a text file and feed it to pinecone vector store",
+        "height": 700,
+        "width": 980,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1380,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "f5b6786d-02c4-404e-ab81-584e650581d6",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# Use the knowledge base to write the blogs for you",
+        "height": 660,
+        "width": 1120,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "c8f9dfbf-be9e-41d0-bd7e-2c09ec7e404a",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0290299d-10a4-40c0-8d41-5d0563f6cd3a",
+              "name": "Keywords",
+              "value": "\"Creativity\" \"Motivation\"",
+              "type": "string"
+            },
+            {
+              "id": "541029b9-1400-4a10-a9cd-9f472af59986",
+              "name": "Search Intent",
+              "value": "People searching to get tips on Motivation",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        700
+      ],
+      "id": "c78bfa24-1b75-4ce0-b0d4-1b4e69310f3b",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "q": "={{ $json.Keywords }}"
+      },
+      "type": "n8n-nodes-scrapeless.scrapeless",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        700
+      ],
+      "id": "a2af60b9-15be-4a5d-8bbc-7ecff78efbb1",
+      "name": "Scrapeless10",
+      "credentials": {
+        "scrapelessApi": {
+          "id": "DbJdKjugySpBs3Sc",
+          "name": "Scrapeless account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I want to write a SEO optimized blog.\n\nKeywords I used: {{ $('Edit Fields1').item.json.Keywords }}\nSearch Intent: {{ $('Edit Fields1').item.json['Search Intent'] }}\nSerp data for the keywords:\n {{ JSON.stringify($json.organic_results) }}\n\nPlease suggest some more keywords that actually align with my search intent. Make use of serp tool for relevancy of keywords.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1560,
+        700
+      ],
+      "id": "04f9dbb3-3ae5-4838-a27d-cad3b4512250",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1640,
+        920
+      ],
+      "id": "6e78be5d-e7ce-4f95-a53b-966960144b93",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "markdownToHtml",
+        "markdown": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        700
+      ],
+      "id": "def7128e-5b6a-4d11-a813-633e8cb9306c",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <title>Report Summary</title>\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap\" rel=\"stylesheet\">\n  <style>\n    body {\n      margin: 0;\n      padding: 0;\n      font-family: 'Inter', sans-serif;\n      background: #f4f6f8;\n      display: flex;\n      align-items: center;\n      justify-content: center;\n      min-height: 100vh;\n    }\n\n    .container {\n      background-color: #ffffff;\n      max-width: 600px;\n      width: 90%;\n      padding: 32px;\n      border-radius: 16px;\n      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);\n      text-align: center;\n    }\n\n    h1 {\n      color: #ff6d5a;\n      font-size: 28px;\n      font-weight: 700;\n      margin-bottom: 12px;\n    }\n\n    h2 {\n      color: #606770;\n      font-size: 20px;\n      font-weight: 600;\n      margin-bottom: 24px;\n    }\n\n    .content {\n      color: #333;\n      font-size: 16px;\n      line-height: 1.6;\n      white-space: pre-wrap;\n    }\n\n    @media (max-width: 480px) {\n      .container {\n        padding: 20px;\n      }\n\n      h1 {\n        font-size: 24px;\n      }\n\n      h2 {\n        font-size: 18px;\n      }\n    }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Data Report</h1>\n    <h2>Processed via Automation</h2>\n    <div class=\"content\">{{ $json.data }}</div>\n  </div>\n\n  <script>\n    console.log(\"Hello World!\");\n  </script>\n</body>\n</html>\n"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2140,
+        700
+      ],
+      "id": "68b90313-94bd-4c3a-a500-91cfe5d0179e",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "content": "# SERP Analysis using AI",
+        "height": 660,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        820,
+        560
+      ],
+      "typeVersion": 1,
+      "id": "c8cc8aa2-bb02-41f8-aea6-3e9d48a683f4",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        780,
+        100
+      ],
+      "id": "f9c8f2bc-27c4-4c2c-a1f6-8a0410f391f8",
+      "name": "Loop Over Items"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Scrapeless4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store3",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrapeless4": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrapeless5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Scrapeless10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrapeless10": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Scrapeless5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
