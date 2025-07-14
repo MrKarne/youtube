@@ -1,0 +1,442 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        60
+      ],
+      "id": "641cbdc8-083a-4f2a-805d-76fcf1e6d639",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/tmp/myvideo.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -40
+      ],
+      "id": "3ec843f7-cdba-48ea-bad5-0f0007713dc5",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/tmp/myaudio.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        100,
+        160
+      ],
+      "id": "691e3a9b-95f2-47f2-abe7-cc5e262f3919",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        320,
+        60
+      ],
+      "id": "ad3dacc6-ad3e-40ac-b16d-02675e3adfb3",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i /tmp/myvideo.mp4 -i /tmp/myaudio.mp4 -c:v copy -c:a aac -strict experimental /tmp/myoutput.mp4"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        520,
+        60
+      ],
+      "id": "57a40d67-3a35-41f0-8a77-0b31b38e62e6",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/myoutput.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        720,
+        60
+      ],
+      "id": "04d9997e-c9c5-4820-bb9c-76d56f895bc7",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "content": "# Merge Audio and Video",
+        "height": 800,
+        "width": 1280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -300
+      ],
+      "typeVersion": 1,
+      "id": "95ab6d27-1e4f-4611-b615-0ef92e86f182",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i /tmp/myoutput.mp4 -vf \"drawtext=text='@yourbrand':fontcolor=white:fontsize=48:x=W-tw-20:y=H-th-20:shadowcolor=black:shadowx=2:shadowy=2\" -c:a copy /tmp/output_watermarked.mp4\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        320
+      ],
+      "id": "953c5441-3749-4fdb-8fa2-1b06facfd33e",
+      "name": "Execute Command1"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/output_watermarked.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        320
+      ],
+      "id": "2eee0f9e-2761-4af3-b586-2d6cfdea59d5",
+      "name": "Read/Write Files from Disk4"
+    },
+    {
+      "parameters": {
+        "content": "# Add Watermark",
+        "height": 260,
+        "width": 480,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "53527d97-7426-4cb1-9c12-ab8836bf69bd",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i /tmp/myoutput.mp4 -vf \"hue='H=2*PI*t':s=1\" -c:a copy /tmp/output_jelly.mp4\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -240
+      ],
+      "id": "a41f4ad5-1e08-4d39-97e3-83e04f392b2a",
+      "name": "Execute Command9"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/output_jelly.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        -240
+      ],
+      "id": "984ce85d-13af-4da8-a157-24aea578c398",
+      "name": "Read/Write Files from Disk8"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -i /tmp/myoutput.mp4 -filter_complex \"[0:a]asetrate=44100*1.5,atempo=1.0,aresample=44100\" -c:v copy /tmp/output_chipmunk.mp4\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        60
+      ],
+      "id": "848b1deb-d951-437d-8cc8-983ae1180d0e",
+      "name": "Execute Command10"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/output_chipmunk.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        60
+      ],
+      "id": "117a4809-bd4a-4eef-a1c7-8c58701e738e",
+      "name": "Read/Write Files from Disk9"
+    },
+    {
+      "parameters": {
+        "content": "# Chipmunk voice effect",
+        "height": 260,
+        "width": 480,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        -40
+      ],
+      "typeVersion": 1,
+      "id": "ccaa7fee-929f-4cb9-972f-55e3f34c56a1",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Color effect",
+        "height": 240,
+        "width": 480,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        920,
+        -300
+      ],
+      "typeVersion": 1,
+      "id": "f6406950-76ae-49c5-9995-eb4b9b2e03df",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "https://v.redd.it/19vgca004x7f1/DASH_360.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        -40
+      ],
+      "id": "0cd91d57-ed04-4c4b-95ff-aeeefc6aa35b",
+      "name": "Get Video"
+    },
+    {
+      "parameters": {
+        "url": "https://v.redd.it/19vgca004x7f1/DASH_AUDIO_128.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        160
+      ],
+      "id": "8ef36891-1464-4341-8d9b-1e7b3a40d9cb",
+      "name": "Get Audio"
+    },
+    {
+      "parameters": {
+        "command": "rm -f /tmp/myoutput.mp4 /tmp/myoutput_temp.mp4 /tmp/myvideo.mp4 /tmp/myaudio.mp4 /tmp/watermark.webp /tmp/output_watermarked.mp4 /tmp/output_jelly.mp4 /tmp/output_chipmunk.mp4"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        60
+      ],
+      "id": "066a8729-9320-436b-a359-17ec3b71ac79",
+      "name": "Delete Files"
+    },
+    {
+      "parameters": {
+        "content": "# Hire me for N8N related freelance work: maneeshwarkarne@gmail.com\n# Subscribe to my youtube channel for more helpful videos about N8N: https://www.youtube.com/@WebXFearless\n# Docker command: https://docs.google.com/document/d/1lU9BeFpxNpgZra5DFShrnFWRzqyKIRzigx-oKbs4YTk/edit?usp=sharing",
+        "height": 280,
+        "width": 1800,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -600
+      ],
+      "typeVersion": 1,
+      "id": "6bd86a60-55be-46e2-b847-cdffb46f9579",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Execute Command1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Command9",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute Command10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk4": {
+      "main": [
+        [
+          {
+            "node": "Delete Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command9": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command10": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Audio": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
