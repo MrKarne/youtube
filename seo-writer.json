@@ -489,6 +489,21 @@
       ],
       "id": "f9c8f2bc-27c4-4c2c-a1f6-8a0410f391f8",
       "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "content": "# Video Walkthrough\n# https://www.youtube.com/watch?v=EYlspH729Fw&t=2s",
+        "width": 2660,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -320,
+        -340
+      ],
+      "typeVersion": 1,
+      "id": "4f79e276-f01d-46f7-8fe8-917494c0407b",
+      "name": "Sticky Note"
     }
   ],
   "connections": {
