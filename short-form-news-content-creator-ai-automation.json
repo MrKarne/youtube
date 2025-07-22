@@ -1,0 +1,962 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        480
+      ],
+      "id": "894e69bd-200c-48d9-af84-824975099097",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawHTML = $json[\"html\"];\n\n// Remove script/style/nav/footer/header/etc. tags and contents\nconst cleanedHTML = rawHTML\n  .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n  .replace(/<style[\\s\\S]*?<\\/style>/gi, '')\n  .replace(/<footer[\\s\\S]*?<\\/footer>/gi, '')\n  .replace(/<header[\\s\\S]*?<\\/header>/gi, '')\n  .replace(/<nav[\\s\\S]*?<\\/nav>/gi, '')\n  .replace(/<noscript[\\s\\S]*?<\\/noscript>/gi, '')\n  .replace(/<svg[\\s\\S]*?<\\/svg>/gi, '')\n  .replace(/<iframe[\\s\\S]*?<\\/iframe>/gi, '')\n  .replace(/<form[\\s\\S]*?<\\/form>/gi, '')\n  .replace(/<aside[\\s\\S]*?<\\/aside>/gi, '')\n  .replace(/<[^>]+>/g, ''); // Strip all other tags\n\n// Convert multiple spaces/newlines into a single space\nconst text = cleanedHTML.replace(/\\s+/g, ' ').trim();\n\n// Optional: limit output length\nreturn [{ cleanedText: text.slice(0, 3000) }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        480
+      ],
+      "id": "90c2fd5d-e0a7-4d67-9359-52f036666d65",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "html": "{{ $json.data }}"
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        480
+      ],
+      "id": "c5dc8b66-aa30-4719-bf5f-9277f473fc5d",
+      "name": "HTML2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.cleanedText }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are helpful assistant. User gives you some blog content and you should rewrite that into a small youtube video script within 120 words strictly.\nUse might give some unnecessary text, ignore it.\n\nOnly reply with raw script dialogue. no music text or anything"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        880,
+        480
+      ],
+      "id": "91254966-a031-4196-9621-5deeaa9b0212",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash-002",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        960,
+        640
+      ],
+      "id": "8e4977bf-1440-433f-8aac-ff5b93240861",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -240,
+        1072
+      ],
+      "id": "bcec40fc-d2b2-4370-80d0-6f0103b36db3",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.together.ai/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "black-forest-labs/FLUX.1-schnell-Free"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.image_prompt }}"
+            },
+            {
+              "name": "width",
+              "value": "={{ 720 }}"
+            },
+            {
+              "name": "height",
+              "value": "={{ 1280 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -16,
+        1072
+      ],
+      "id": "fbc49e84-095a-4fe8-8b6b-960f68643e50",
+      "name": "Generate AI image",
+      "alwaysOutputData": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "QqZR9Nx8oNuXH7uQ",
+          "name": "Unnamed credential"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        1088
+      ],
+      "id": "5d74fad9-848c-4ca7-a8d3-1fac1f745256",
+      "name": "Wait for the error / rate limit to go away",
+      "webhookId": "8efb252c-f88a-41d2-9dbe-d7ce3504cbba"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        912
+      ],
+      "id": "9af36741-2f1b-4ba4-bc3b-4fad37c80cf7",
+      "name": "Download Image"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/tmp/stup",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        400,
+        912
+      ],
+      "id": "9bd8f312-1030-4319-a719-0b04c5a4bfee",
+      "name": "Write the Image to Disk"
+    },
+    {
+      "parameters": {
+        "command": "=ffmpeg -y -loop 1 -i /tmp/ImageForVideo.jpg -i /tmp/audoutput.mp3 -vf \"zoompan=z='1 + (0.02 * on / (25 * 5.74))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=720x1280:fps=60,format=yuv420p\" -c:v libx264 -preset veryfast -tune stillimage -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/poemvideo_{{ $runIndex }}.mp4"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        912
+      ],
+      "id": "b98e1705-a869-48d6-8bbc-b19c8d3cde6f",
+      "name": "Generate video"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/final_poemvideo.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        656,
+        1744
+      ],
+      "id": "eef1de66-8580-4819-9119-aa270fdcd5b8",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "command": "ls /tmp/poemvideo_*.mp4 | sort | awk '{print \"file \\x27\" $0 \"\\x27\"}' > /tmp/concat_list.txt\n\n\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1744
+      ],
+      "id": "22ab954c-c4c3-4535-a34d-9a6449ea4cc9",
+      "name": "Create text file"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -f concat -safe 0 -i /tmp/concat_list.txt -c copy /tmp/final_poemvideo.mp4\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        432,
+        1744
+      ],
+      "id": "1a8ce14d-9f50-412e-a9fe-566f64b299c4",
+      "name": "Merge Videos"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        1088
+      ],
+      "id": "9754a59f-366e-4985-9455-a22d70cd9d3e",
+      "name": "Goddamn Rate limits",
+      "webhookId": "9596b64a-4be6-40c1-b79f-7ff270ff599e"
+    },
+    {
+      "parameters": {
+        "content": "# Video Render",
+        "height": 264,
+        "width": 760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        1664
+      ],
+      "typeVersion": 1,
+      "id": "393e31f4-ca80-4e8b-9ec5-a26ae5c5995c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Image, Audio and Video generation",
+        "height": 580,
+        "width": 2108,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        800
+      ],
+      "typeVersion": 1,
+      "id": "c9300d41-899b-472e-90c0-8cc55136960c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        480
+      ],
+      "id": "a44470fe-8a79-4529-a74b-63ebe6a03ea0",
+      "name": "Split Out2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1344,
+        640
+      ],
+      "id": "996333cb-107d-4029-9ec8-e32ee065d788",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=<Instructions>\nTake the following Tips and break it down into multiple scenes. Break it up at every phrase, and add punctuation to increase emotions for the text to speech model we are going to use.\n\nFor each scene, create an image prompt that we'll use with an image generation tool.\n\nCreate the image generation prompt using the ImagePromptTemplate below based on a **pure description of an energetic and conceptual illustration** showing the scene from a distance. Do **not** refer to lines, stanzas, or poems. \n\nAdd \"Do not add text or characters to the final image.\" to the end of each image prompt.\n</Instructions>\n\n<ImagePromptTemplate>\nGenerate a futuristic, high-tech, and energetic illustration showing:  \n{DESCRIBE_SCENE_HERE_FROM_DISTANCE}.  \n\nUse a sleek sci-fi art style featuring sharp contrasts, vibrant neons, glowing tech elements, dynamic shapes, and surreal digital landscapes. The image should convey rapid innovation, bold intelligence, and high-performance environments.  \n\nUse keywords: tech illustration, futuristic design, neon glow, cyber energy, artificial intelligence, dynamic systems, digital speed, bold contrast, modern innovation.  \n\nDo not add text or characters to the final image.\n</ImagePromptTemplate>\n\n<Tips>\n{{ $json.text }}\n</Tips>\n\n/nothink",
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"scenes\": {\n            \"type\": \"array\",\n            \"description\": \"poem scenes\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"the text of the scene, it will be used for TTS. Keep this within 7-12 words.\"\n                    },\n                    \"image_prompt\": {\n                        \"type\": \"string\",\n                        \"description\": \"prompt for image generation\"\n                    }\n                },\n                \"required\": [\n                    \"text\",\n                    \"image_prompt\"\n                ]\n            }\n        },\n        \"title\": {\n            \"type\": \"string\",\n            \"description\": \"the title of the youtube video\"\n        },\n        \"description\": {\n            \"type\": \"string\",\n            \"description\": \"the description of the youtube video\"\n        },\n        \"tags\": {\n            \"type\": \"array\",\n            \"description\": \"tags for sharing the video on youtube\",\n            \"items\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"required\": [\n        \"scenes\",\n        \"title\",\n        \"description\",\n        \"tags\"\n    ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        480
+      ],
+      "id": "473f05be-7ef5-48c7-a439-06b14744ce8e",
+      "name": "Create the script"
+    },
+    {
+      "parameters": {
+        "content": "# Image Prompt generation",
+        "height": 404,
+        "width": 556,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1248,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "d03b8949-d20b-4c44-a05e-c0d055bc0404",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "command": "=./edge_env/bin/edge-tts  --text {{ $('Loop Over Items').item.json.text.toJsonString() }} --voice en-US-AvaNeural --write-media /tmp/audoutput.mp3"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        912
+      ],
+      "id": "421c15ff-7fc9-41de-92ed-4555a7fd4ebe",
+      "name": "Generate Voiceover"
+    },
+    {
+      "parameters": {
+        "command": "rm -f /tmp/poemvideo_*.mp4 /tmp/video_*.mp4 /tmp/outputVideo.mp4 /tmp/final_poemvideo.mp4 /tmp/audoutput.mp3 /tmp/list.txt /tmp/inputs.txt /tmp/concat_list.txt /tmp/hello.mp3\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        1920
+      ],
+      "id": "96be4c2e-8636-49f1-b621-502b192d1fcc",
+      "name": "Clean up1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// const input = $json[\"text\"] || \"\"; // Your input string\nconst input = $('Loop Over Items').item.json.text || \"\"; // Your input string\nconst maxLength = 26;\n\nfunction wrapText(text, maxLen) {\n  const words = text.split(\" \");\n  let lines = [];\n  let currentLine = \"\";\n\n  for (const word of words) {\n    if ((currentLine + \" \" + word).trim().length <= maxLen) {\n      currentLine += (currentLine ? \" \" : \"\") + word;\n    } else {\n      lines.push(currentLine);\n      currentLine = word;\n    }\n  }\n  if (currentLine) lines.push(currentLine);\n\n  return lines.join(\"\\n\");\n}\n\nreturn [\n  {\n    json: {\n      wrappedText: wrapText(input, maxLength)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        912
+      ],
+      "id": "43a76d51-6842-4620-992f-576500fc6712",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "command": "=ffmpeg -i /tmp/stup -vf \"drawtext=fontfile='/path/to/comicbd.ttf':text='{{ $json.wrappedText }}':fontcolor=white:bordercolor=black:borderw=6:fontsize=50:x=10:y=300:shadowcolor=black:shadowx=2:shadowy=2\" -y /tmp/ImageForVideo.jpg\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        864,
+        912
+      ],
+      "id": "1ea3d09e-a0a1-44df-91ae-928c41d36ad6",
+      "name": "Add Captions"
+    },
+    {
+      "parameters": {
+        "content": "# Get Latest News",
+        "height": 400,
+        "width": 928,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "c126a837-c47b-47d6-9f4e-d584634c1421",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Write Script",
+        "height": 400,
+        "width": 592,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "18fc66ff-e316-46d7-829d-d022b579de1c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "instagram"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        1552
+      ],
+      "id": "7a3c2c35-ed98-4b27-9f28-a8c1c847e743",
+      "name": "Instagram"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "x"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        1744
+      ],
+      "id": "0c3a8169-1de4-4900-a8a6-2af88f78abf9",
+      "name": "Twitter/X"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "youtube"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('Create the script').item.json.output.description }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1056,
+        1920
+      ],
+      "id": "6476de69-8606-45bd-8924-c9b66cc82d87",
+      "name": "Youtube"
+    },
+    {
+      "parameters": {
+        "content": "\n\n# 👉 [Click here to sign up for Upload-post](https://www.upload-post.com/?linkId=lp_144414&sourceId=broccoli&tenantId=upload-post-app)\n\n# 👉 [Video tutorial for configuring social media publishing](https://youtu.be/h_U_p4pQosM)",
+        "height": 232,
+        "width": 756,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        96,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "ba460dd3-3d77-4386-950f-297e57dc05f2",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Publish",
+        "height": 672,
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        928,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "60c3ebe1-7952-4cbc-bd9c-bef9c92716f1",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Docker command to setup FFMPEG\n\ndocker run -it --rm `\n  --name tender_moore `\n  -p 5678:5678 `\n  -e N8N_PORT=5678 `\n  -e N8N_HOST=localhost `\n  -e WEBHOOK_TUNNEL_URL=http://localhost:5678 `\n  -e N8N_BINARY_DATA_MODE=filesystem `\n  -v n8n_data:/home/node/.n8n `\n  --user 0 `\n  --entrypoint sh `\n  n8nio/n8n:latest `\n  -c \"apk add --no-cache ffmpeg && su node -c 'n8n'\"\n\n\n# Paste the below Command and execute to install Edge TTS - for voiceover\n\nFirst command:\n\napk add --no-cache python3 py3-pip && pip3 install edge-tts\n\nSecond command:\n\npython3 -m venv edge_env && \\\nsource edge_env/bin/activate && \\\npip install edge-tts\n\n# Install Scrapeless community node\n## Settings -> Community nodes -> Enter \"n8n-nodes-scrapeless\" -> Install\n\n# Get your Scrapeless API key at https://scrapeless.com\n\n# Get a together ai API key from https://together.ai",
+        "height": 1136,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1840,
+        384
+      ],
+      "typeVersion": 1,
+      "id": "e9fe3fb7-1e64-46c8-b757-dd4235acae25",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "q": "AI models and AI tools",
+        "tbs": "qdr:d",
+        "tbm": "nws"
+      },
+      "type": "n8n-nodes-scrapeless.scrapeless",
+      "typeVersion": 1,
+      "position": [
+        32,
+        480
+      ],
+      "id": "89f4acd4-53c7-40f0-80ca-abed9c7c5e99",
+      "name": "Google Search1",
+      "credentials": {
+        "scrapelessApi": {
+          "id": "DbJdKjugySpBs3Sc",
+          "name": "Scrapeless account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "universalScrapingApi",
+        "url": "={{ $json.local_news[0].link }}"
+      },
+      "type": "n8n-nodes-scrapeless.scrapeless",
+      "typeVersion": 1,
+      "position": [
+        240,
+        480
+      ],
+      "id": "907c817a-3462-41e1-8de2-f0b39d2d1ac2",
+      "name": "Web Unlocker",
+      "credentials": {
+        "scrapelessApi": {
+          "id": "DbJdKjugySpBs3Sc",
+          "name": "Scrapeless account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Search1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML2": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Create the script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Create text file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate AI image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate AI image": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for the error / rate limit to go away",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for the error / rate limit to go away": {
+      "main": [
+        [
+          {
+            "node": "Generate AI image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Write the Image to Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the Image to Disk": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate video": {
+      "main": [
+        [
+          {
+            "node": "Goddamn Rate limits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Twitter/X",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Youtube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create text file": {
+      "main": [
+        [
+          {
+            "node": "Merge Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Videos": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Goddamn Rate limits": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create the script",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create the script": {
+      "main": [
+        [
+          {
+            "node": "Split Out2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Generate video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Add Captions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Captions": {
+      "main": [
+        [
+          {
+            "node": "Generate Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Youtube": {
+      "main": [
+        [
+          {
+            "node": "Clean up1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Search1": {
+      "main": [
+        [
+          {
+            "node": "Web Unlocker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Unlocker": {
+      "main": [
+        [
+          {
+            "node": "HTML2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
