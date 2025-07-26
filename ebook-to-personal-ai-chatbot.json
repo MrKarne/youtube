@@ -97,8 +97,8 @@
       "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
       "typeVersion": 1,
       "position": [
-        -1280,
-        1472
+        -1264,
+        1440
       ],
       "id": "9e3ddad3-b627-44db-b9e2-fe05db10a652",
       "name": "Recursive Character Text Splitter"
@@ -242,7 +242,6 @@
     {
       "parameters": {
         "public": true,
-        "authentication": "basicAuth",
         "initialMessages": "Hi there! 👋\nMy name is James. How can I assist you today?",
         "options": {
           "loadPreviousSession": "memory"
@@ -256,13 +255,7 @@
       ],
       "id": "a6fec28f-f048-4aff-8f3a-56b45328848a",
       "name": "When chat message received",
-      "webhookId": "fbd29f6e-9400-4aca-91a6-fd99a8bab93f",
-      "credentials": {
-        "httpBasicAuth": {
-          "id": "GkUIAgSti12Wptul",
-          "name": "Unnamed credential 2"
-        }
-      }
+      "webhookId": "fbd29f6e-9400-4aca-91a6-fd99a8bab93f"
     },
     {
       "parameters": {},
@@ -304,6 +297,20 @@
       ],
       "id": "fd701d01-51f3-48ae-9984-3034a2a841b8",
       "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "# Video Tutorial: https://youtu.be/Ra_11_9sFlE?si=cR5nF4zb6ob4C0jI",
+        "width": 2144
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2000,
+        784
+      ],
+      "typeVersion": 1,
+      "id": "653f1ca0-e1ea-4023-84ea-93c9e4bf3021",
+      "name": "Sticky Note2"
     }
   ],
   "connections": {
