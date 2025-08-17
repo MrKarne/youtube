@@ -1,0 +1,768 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1520,
+        -672
+      ],
+      "id": "c3aaf0c6-e7fd-4280-844f-c22e118939c0",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.together.ai/v1/images/generations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "black-forest-labs/FLUX.1-schnell-Free"
+            },
+            {
+              "name": "prompt",
+              "value": "={{ $json.image_prompt }}"
+            },
+            {
+              "name": "width",
+              "value": "={{ 720 }}"
+            },
+            {
+              "name": "height",
+              "value": "={{ 1280 }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1296,
+        -672
+      ],
+      "id": "b4d9f63c-5fe8-4e24-9884-97e0db94873d",
+      "name": "Generate AI image",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "QqZR9Nx8oNuXH7uQ",
+          "name": "Unnamed credential"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1088,
+        -656
+      ],
+      "id": "f9b0c87e-ec92-4780-8fb5-5a8647490bb0",
+      "name": "Wait for the error / rate limit to go away",
+      "webhookId": "8efb252c-f88a-41d2-9dbe-d7ce3504cbba"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data[0].url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1088,
+        -832
+      ],
+      "id": "d27bc957-ee71-4309-bf20-1ea389777917",
+      "name": "Download Image"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/tmp/stup",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        -832
+      ],
+      "id": "0728abed-bc05-4282-8b0f-d6d64e599602",
+      "name": "Write the Image to Disk"
+    },
+    {
+      "parameters": {
+        "command": "=ffmpeg -y -loop 1 -i /tmp/ImageForVideo.jpg -i /tmp/audoutput.mp3 -vf \"zoompan=z='1 + (0.02 * on / (25 * 5.74))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=720x1280:fps=60,format=yuv420p\" -c:v libx264 -preset veryfast -tune stillimage -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/poemvideo_{{ $runIndex }}.mp4"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        16,
+        -832
+      ],
+      "id": "7a73d7ac-b00e-4908-8a3d-95acad8a1126",
+      "name": "Generate video"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/tmp/final_poemvideo.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        16
+      ],
+      "id": "35f95866-7582-4f01-a6db-e7b063ce382f",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "command": "ls /tmp/poemvideo_*.mp4 | sort | awk '{print \"file \\x27\" $0 \"\\x27\"}' > /tmp/concat_list.txt\n\n\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -1072,
+        16
+      ],
+      "id": "78eba697-0e76-4a4d-867d-de092045b672",
+      "name": "Create text file"
+    },
+    {
+      "parameters": {
+        "command": "ffmpeg -f concat -safe 0 -i /tmp/concat_list.txt -c copy /tmp/final_poemvideo.mp4\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -848,
+        16
+      ],
+      "id": "31252f36-085d-420e-8f02-6299a1f2654e",
+      "name": "Merge Videos"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        -656
+      ],
+      "id": "98d524e8-3d1c-4a26-a3c6-19c180c8abb7",
+      "name": "Goddamn Rate limits",
+      "webhookId": "9596b64a-4be6-40c1-b79f-7ff270ff599e"
+    },
+    {
+      "parameters": {
+        "content": "# Video Render",
+        "height": 264,
+        "width": 760,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1184,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "851e7266-e916-43d7-a64d-7e8dfd5fdf50",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Image, Audio and Video generation",
+        "height": 580,
+        "width": 2108,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1584,
+        -944
+      ],
+      "typeVersion": 1,
+      "id": "bd775566-fdc6-42c3-82d9-118761ca9e65",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.scenes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1808,
+        -752
+      ],
+      "id": "caa6db9a-e477-446d-b606-aa10d857b36f",
+      "name": "Split Out2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2112,
+        -592
+      ],
+      "id": "01780f23-5662-4c4d-85cf-0d65ca3b7263",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "edDplylFyozSJEnN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "=<Instructions>\nTake the following Tips and break it down into multiple scenes of youtube short video dialog - start to end. Break it up at every phrase, and add punctuation to increase emotions for the text to speech model we are going to use.\n\nFor each scene, create an image prompt that we'll use with an image generation tool.\n\nCreate the image generation prompt using the ImagePromptTemplate below based on a **pure description of an energetic and conceptual illustration** showing the scene from a distance. Do **not** refer to lines, stanzas, or poems. \n\nAdd \"Do not add text or characters to the final image.\" to the end of each image prompt.\n</Instructions>\n\n<ImagePromptTemplate>\n\n{DESCRIBE_SCENE_HERE_FROM_DISTANCE}.  \n\nUse keywords acc to the topic.  \n\nDo not add text or characters to the final image.\n</ImagePromptTemplate>\n\n<Tips>\n{{ $json['Type the Video script'] }}\n</Tips>\n\n/nothink",
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"scenes\": {\n            \"type\": \"array\",\n            \"description\": \"poem scenes\",\n            \"items\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"text\": {\n                        \"type\": \"string\",\n                        \"description\": \"the text of the scene, it will be used for TTS. Keep this within 7-12 words.\"\n                    },\n                    \"image_prompt\": {\n                        \"type\": \"string\",\n                        \"description\": \"prompt for image generation\"\n                    }\n                },\n                \"required\": [\n                    \"text\",\n                    \"image_prompt\"\n                ]\n            }\n        },\n        \"title\": {\n            \"type\": \"string\",\n            \"description\": \"the title of the youtube video\"\n        },\n        \"description\": {\n            \"type\": \"string\",\n            \"description\": \"the description of the youtube video\"\n        },\n        \"tags\": {\n            \"type\": \"array\",\n            \"description\": \"tags for sharing the video on youtube\",\n            \"items\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"required\": [\n        \"scenes\",\n        \"title\",\n        \"description\",\n        \"tags\"\n    ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        -2192,
+        -752
+      ],
+      "id": "d8baf784-e720-4ac5-8ba4-7650650401a8",
+      "name": "Create the script"
+    },
+    {
+      "parameters": {
+        "content": "# Image Prompt and Script generation",
+        "height": 580,
+        "width": 876,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2480,
+        -944
+      ],
+      "typeVersion": 1,
+      "id": "a8a2a724-94d4-4e51-a9e4-8c802965f755",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "command": "=./edge_env/bin/edge-tts  --text {{ $('Loop Over Items').item.json.text.toJsonString() }} --voice en-US-AvaNeural --write-media /tmp/audoutput.mp3"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -208,
+        -832
+      ],
+      "id": "2691ddcf-8f52-4e31-8ec2-25e39ad0dbb5",
+      "name": "Generate Voiceover"
+    },
+    {
+      "parameters": {
+        "command": "rm -f /tmp/poemvideo_*.mp4 /tmp/video_*.mp4 /tmp/outputVideo.mp4 /tmp/final_poemvideo.mp4 /tmp/audoutput.mp3 /tmp/list.txt /tmp/inputs.txt /tmp/concat_list.txt /tmp/hello.mp3\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        112,
+        192
+      ],
+      "id": "f3848f23-49a6-4677-9533-142424f4a2d5",
+      "name": "Clean up1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// const input = $json[\"text\"] || \"\"; // Your input string\nlet input = $('Loop Over Items').item.json.text || \"\"; // Your input string\nconst maxLength = 26;\n\nfunction escapeFFmpegText(str) {\n  // This code specifically produces the \"\\\\\\\\'\" pattern you requested.\n  // It escapes single quotes with \"\\\\\\'\" and then escapes the backslashes.\n  return str\n    .replace(/\\\\/g, '\\\\\\\\\\\\\\\\\\\\\\\\')\n    .replace(/\"/g, '\\\\\\\\\\\\\\\\\\\\\"')\n    .replace(/'/g, \"'\\\\\\\\\\\\\\\\\\\\\\\\''\")\n    .replace(/%/g, '\\\\\\\\\\\\\\\\\\\\\\%')\n    .replace(/:/g, '\\\\\\\\\\\\\\\\\\\\:');\n}\n\nfunction wrapText(text, maxLen) {\n  const words = text.split(\" \");\n  let lines = [];\n  let currentLine = \"\";\n\n  for (const word of words) {\n    if ((currentLine + \" \" + word).trim().length <= maxLen) {\n      currentLine += (currentLine ? \" \" : \"\") + word;\n    } else {\n      lines.push(currentLine);\n      currentLine = word;\n    }\n  }\n  if (currentLine) lines.push(currentLine);\n\n  return lines.join(\"\\n\");\n}\n\nconst escapedInput = escapeFFmpegText(input);\nconst wrapped = wrapText(escapedInput, maxLength).replace(/\\n/g, '\\n');\n\nreturn [\n  {\n    json: {\n      wrappedText: wrapped\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        -832
+      ],
+      "id": "1585b27b-e698-4e98-abc8-103f5cab8ae9",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "command": "=ffmpeg -i /tmp/stup -vf \"drawtext=fontfile='/path/to/comicbd.ttf':text='{{ $json.wrappedText }}':fontcolor=white:bordercolor=black:borderw=6:fontsize=50:x=10:y=300:shadowcolor=black:shadowx=2:shadowy=2\" -y /tmp/ImageForVideo.jpg\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        -832
+      ],
+      "id": "05d730b2-56de-4bca-b676-ed96c8acc722",
+      "name": "Add Captions"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "upload post api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "instagram"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        -192
+      ],
+      "id": "d65b1d73-764b-4ba5-a6b9-b0185f02ea16",
+      "name": "Instagram"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "upload post api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "x"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        16
+      ],
+      "id": "cd703b20-c5af-4640-a076-17071ba27bd1",
+      "name": "Twitter/X"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.upload-post.com/api/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "upload post api key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "user",
+              "value": "brocoli"
+            },
+            {
+              "name": "platform[]",
+              "value": "youtube"
+            },
+            {
+              "name": "title",
+              "value": "={{ $('Create the script').item.json.output.title }}"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "video",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "description",
+              "value": "={{ $('Create the script').item.json.output.description }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "f6f3456d-7405-49e6-ab2e-9ccf9ad1632e",
+      "name": "Youtube"
+    },
+    {
+      "parameters": {
+        "content": "\n\n# 👉 [Click here to sign up for Upload-post](https://www.upload-post.com/?linkId=lp_144414&sourceId=broccoli&tenantId=upload-post-app)\n\n# 👉 [Video tutorial for configuring social media publishing](https://youtu.be/h_U_p4pQosM)",
+        "height": 232,
+        "width": 756,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1184,
+        -320
+      ],
+      "typeVersion": 1,
+      "id": "b622be35-2db6-487a-95ef-264e0f66f2f5",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Publish",
+        "height": 672,
+        "width": 352,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "455cb010-3904-4e8f-95ad-88273492f5f5",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "# Docker command to setup FFMPEG\n\ndocker run -it --rm `\n  --name tender_moore `\n  -p 5678:5678 `\n  -e N8N_PORT=5678 `\n  -e N8N_HOST=localhost `\n  -e WEBHOOK_TUNNEL_URL=http://localhost:5678 `\n  -e N8N_BINARY_DATA_MODE=filesystem `\n  -v n8n_data:/home/node/.n8n `\n  --user 0 `\n  --entrypoint sh `\n  n8nio/n8n:latest `\n  -c \"apk add --no-cache ffmpeg && su node -c 'n8n'\"\n\n\n# Paste the below Command and execute to install Edge TTS - for voiceover\n\nFind your n8n container ID:\ndocker ps\nLook for the container running the n8n image and copy its ID.\n\nGet a root shell inside the container:\ndocker exec -it --user root <container_id> sh\n\nInstall the packages:\nNow that you're in the container with root permissions, run your installation commands:\napk add --no-cache python3 py3-pip && pip3 install edge-tts\n\nSecond command:\n\npython3 -m venv edge_env && \\\nsource edge_env/bin/activate && \\\npip install edge-tts\n\n# Get a together ai API key from https://together.ai",
+        "height": 1136,
+        "width": 560
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        -944
+      ],
+      "typeVersion": 1,
+      "id": "771d1418-323c-47be-b1f3-fabf03ac9d0f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Video is about?",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Type the Video script",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -2384,
+        -752
+      ],
+      "id": "2c4322d4-609d-4b5c-b216-da04016a8e3a",
+      "name": "On form submission",
+      "webhookId": "5ea4e0cc-777e-45e5-b2a8-63a059d820b7"
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Create text file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate AI image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate AI image": {
+      "main": [
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait for the error / rate limit to go away",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for the error / rate limit to go away": {
+      "main": [
+        [
+          {
+            "node": "Generate AI image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "Write the Image to Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the Image to Disk": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate video": {
+      "main": [
+        [
+          {
+            "node": "Goddamn Rate limits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Twitter/X",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Youtube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create text file": {
+      "main": [
+        [
+          {
+            "node": "Merge Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Videos": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Goddamn Rate limits": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Create the script",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create the script": {
+      "main": [
+        [
+          {
+            "node": "Split Out2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Voiceover": {
+      "main": [
+        [
+          {
+            "node": "Generate video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Add Captions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Captions": {
+      "main": [
+        [
+          {
+            "node": "Generate Voiceover",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Youtube": {
+      "main": [
+        [
+          {
+            "node": "Clean up1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Create the script",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
