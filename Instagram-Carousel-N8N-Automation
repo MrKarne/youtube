@@ -426,14 +426,14 @@
     },
     {
       "parameters": {
-        "content": "# Sign up for [Blotato](https://blotato.com/?ref=karne) for automating Social Media Uploads\n\n# Signup for apitemplate.io for Image templates\n## ",
+        "content": "# Sign up for [Blotato](https://blotato.com/?ref=karne) for automating Social Media Uploads\n\n# Signup for apitemplate.io for Image templates\n\n# Youtube tutorial: https://www.youtube.com/watch?v=TKyjkgluTCA",
         "height": 816,
         "width": 2256
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -656,
-        -272
+        -288
       ],
       "typeVersion": 1,
       "id": "1ca2de93-b156-4915-9f06-b07ba588eb81",
