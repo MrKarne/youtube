@@ -1,0 +1,604 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -176,
+        144
+      ],
+      "id": "fea16e69-6245-4671-ae12-c8e9c250619c",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA",
+          "mode": "list",
+          "cachedResultName": "Testing Workflows",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ImageUrls": "={{ $json.download_url }}"
+          },
+          "matchingColumns": [
+            "Image Urls"
+          ],
+          "schema": [
+            {
+              "id": "ImageUrls",
+              "displayName": "ImageUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        288,
+        304
+      ],
+      "id": "23f4ab07-4cf3-4d59-b4fb-d4bde2ef5a35",
+      "name": "Append row in sheet1"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "maneeshwarkarne@gmail.com",
+        "subject": "Approval Required",
+        "message": "=Do you like the carousal?\n {{ $json.html }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        928,
+        128
+      ],
+      "id": "b9049d0c-1e97-409a-aaaf-8b59afefbae4",
+      "name": "Send message and wait for response1",
+      "webhookId": "c458cd9f-24e3-4567-9c1a-9e2089d2e9a9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df7d89bc-e54a-4e18-aa81-97dd1b21d102",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1152,
+        128
+      ],
+      "id": "c2da1751-7ae3-4d48-bafb-4dc1b88b5885",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA",
+          "mode": "list",
+          "cachedResultName": "Testing Workflows",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit#gid=0"
+        },
+        "numberToDelete": "={{ $json[\"ImageUrls\"].length }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        32,
+        -48
+      ],
+      "id": "dfe30202-8f35-4894-b559-be7d811bc8fc",
+      "name": "Delete rows or columns from sheet"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA",
+          "mode": "list",
+          "cachedResultName": "Testing Workflows",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -368,
+        -48
+      ],
+      "id": "9d0e9015-2557-4d06-b43a-2ec82021eb68",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QaTlyWnaTSbIlgkE",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Image Urls"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -48
+      ],
+      "id": "bce578a2-143e-4ca7-a434-8f8a523c83bd",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://rest-us.apitemplate.io/v2/create-image",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "template_id",
+              "value": "Template_Id"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "API_Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"overrides\": [\n        {\n            \"name\": \"background\",\n            \"stroke\": \"grey\",\n            \"src\": \"https://images.unsplash.com/photo-1508402476522-c77c2fa4479d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxOTc1MDZ8MHwxfHNlYXJjaHwxfHxzdGFyfGVufDB8MHx8&ixlib=rb-1.2.1&q=80&w=1080\"\n        },\n        {\n            \"name\": \"masked-image_1\",\n            \"src\": \"https://images.pexels.com/photos/242236/pexels-photo-242236.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940\",\n            \"mask\": \"/static/images/svg/stroke_01.svg\"\n        },\n        {\n            \"name\": \"text_quote\",\n            \"text\": {{ $json.text.toJsonString() }},\n            \"textBackgroundColor\": \"rgba(246, 243, 243, 0)\",\n            \"color\": \"#2F2F2F\"\n        }\n    ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        304
+      ],
+      "id": "626cf526-e341-4d93-a673-0ea619ff2a27",
+      "name": "Template Filler"
+    },
+    {
+      "parameters": {
+        "formTitle": "Carousel Automation",
+        "formDescription": "Please input the text fields",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "First Page"
+            },
+            {
+              "fieldLabel": "Second"
+            },
+            {
+              "fieldLabel": "Third"
+            },
+            {
+              "fieldLabel": "Fourth"
+            },
+            {
+              "fieldLabel": "Fifth"
+            },
+            {
+              "fieldLabel": "Sixth"
+            },
+            {
+              "fieldLabel": "Seventh"
+            },
+            {
+              "fieldLabel": "Eighth"
+            },
+            {
+              "fieldLabel": "Ninth"
+            },
+            {
+              "fieldLabel": "Tenth"
+            },
+            {
+              "fieldLabel": "Caption"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        144
+      ],
+      "id": "715a8620-f831-4efd-8dc9-c5eac338fe02",
+      "name": "On form submission1",
+      "webhookId": "4fe4d3a5-8877-4a2e-b10e-9477819240ce"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json;\n\n// Define the keys to exclude from the final output (metadata)\nconst keysToExclude = [\"submittedAt\", \"formMode\",\"Caption\"];\n\nconst output = [];\n\n// Iterate over all keys (fields) in the submitted form data\nfor (const key in inputData) {\n  if (inputData.hasOwnProperty(key)) {\n\n    // --- UPDATED EXCLUSION LOGIC ---\n    // 1. Skip the standard excluded metadata fields (exact match)\n    // 2. Skip any field whose key contains the string \"First\"\n    if (keysToExclude.includes(key)) {\n      continue;\n    }\n    // --------------------------------\n\n    const value = inputData[key];\n\n    // Check if the value is a non-empty string after trimming whitespace.\n    // This filters out empty strings and fields that were not filled (\"\").\n    if (typeof value === 'string' && value.trim() !== '') {\n\n      // Create a new output item structured for n8n to pass along.\n      // This will create one item for each carousel slide.\n      output.push({\n        json: {\n          // The main content of the slide (your caption/text)\n          text: value,\n          // Keeping the original key (e.g., \"Second\") can be helpful for debugging\n          slideTitle: key\n        }\n      });\n    }\n  }\n}\n\n// The 'output' array now only contains non-empty slides, excluding metadata and \"First Page\".\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        144
+      ],
+      "id": "6cbecc51-77ea-4a55-bea8-fff97fc84ecb",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA",
+          "mode": "list",
+          "cachedResultName": "Testing Workflows",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ESY8O4CBSh2cXbp5jXKeQME_rDpOZ1YvbbDhycJRBOA/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        256,
+        128
+      ],
+      "id": "25700710-82b1-4725-acbd-e9c87ffe6db7",
+      "name": "Get row(s) in sheet1"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "ImageUrls"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        480,
+        128
+      ],
+      "id": "3f965b6a-eda1-41ed-bd3d-1cb8d48fc0c7",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://backend.blotato.com/v2/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer Blotato_API_Key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"post\": {\n    \"accountId\": \"ACCOUNT_ID\",\n    \"content\": {\n      \"text\": {{ $('On form submission1').item.json.Caption.toJsonString() }},\n      \"mediaUrls\": {{ $('Aggregate1').item.json.ImageUrls.toJsonString() }},\n      \"platform\": \"instagram\"\n    },\n    \"target\": {\n      \"targetType\": \"instagram\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1376,
+        112
+      ],
+      "id": "74723547-3758-442d-9825-f38b60a2e586",
+      "name": "Upload to Instagram"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c95cd034-68eb-4e58-9ac0-f2c7ccf8f630",
+              "name": "html",
+              "value": "=<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n<title>Images</title>\n</head>\n<body style=\"margin:0;padding:0;background-color:#ffffff;\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" role=\"presentation\"><tr><td align=\"center\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\" align=\"center\" style=\"width:100%;max-width:600px;\">{{ $json.ImageUrls.map(url => `<tr><td align=\"center\" style=\"padding:10px 0;\"><img src=\"${url}\" alt=\"Carousel Image\" width=\"600\" style=\"display:block;width:100%;max-width:600px;height:auto;border:0;\"/></td></tr>`).join('') }}</table></td></tr></table>\n</body>\n</html>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        704,
+        128
+      ],
+      "id": "bed5b4b5-3434-4e28-a5d3-c1678aafe1b1",
+      "name": "Generate HTML"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "={{ $json.ImageUrls }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        48,
+        128
+      ],
+      "id": "a1e5f11c-69c8-414d-9768-a584fd9c48b5",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "content": "# Sign up for [Blotato](https://blotato.com/?ref=karne) for automating Social Media Uploads\n\n# Signup for apitemplate.io for Image templates\n## ",
+        "height": 816,
+        "width": 2256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -656,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "1ca2de93-b156-4915-9f06-b07ba588eb81",
+      "name": "Sticky Note"
+    }
+  ],
+  "connections": {
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Template Filler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Upload to Instagram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Delete rows or columns from sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Template Filler": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Generate HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
