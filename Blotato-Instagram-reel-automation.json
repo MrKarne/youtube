@@ -385,7 +385,8 @@
     },
     {
       "parameters": {
-        "content": "# [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n# [Google Cloud console](https://console.cloud.google.com/)",
+        "content": "# [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n# [Google Cloud console](https://console.cloud.google.com/)\n# [Youtube Tutorial](https://youtu.be/z3zhog9T8hc)",
+        "height": 192,
         "width": 880
       },
       "type": "n8n-nodes-base.stickyNote",
