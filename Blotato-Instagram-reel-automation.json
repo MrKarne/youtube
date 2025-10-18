@@ -322,7 +322,7 @@
     {
       "parameters": {
         "operation": "sendAndWait",
-        "sendTo": "maneeshwarkarne@gmail.com",
+        "sendTo": "your_email",
         "subject": "Video Approval Email",
         "message": "=<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"border-collapse: collapse;\">\n  <tr>\n    <td align=\"center\" style=\"padding: 0; font-size: 0; line-height: 0;\">\n      <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"320\" style=\"width: 320px; border-collapse: collapse; margin: 0 auto;\">\n        <tr>\n          <td align=\"center\" style=\"padding: 0;\">\n            <video controls width=\"320\" height=\"569\" style=\"display: block; width: 320px; height: 569px; max-width: 100%; border: none;\">\n              <source src=\"{{ $json.item.mediaUrl }}\" type=\"video/mp4\">\n              <a href=\"{{ $json.item.mediaUrl }}\" style=\"font-family: Arial, sans-serif; font-size: 14px; color: #153643; text-decoration: underline;\">\n                Click here to watch the video.\n              </a>\n            </video>\n          </td>\n        </tr>\n      </table>\n    </td>\n  </tr>\n</table>",
         "approvalOptions": {
@@ -385,7 +385,7 @@
     },
     {
       "parameters": {
-        "content": "# [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n# [Google Cloud console](https://console.cloud.google.com/)\n# [Youtube Tutorial](https://youtu.be/z3zhog9T8hc)",
+        "content": "# [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n# [Google Cloud console](https://console.cloud.google.com/)\n# [Youtube Tutorial](https://youtu.be/4UL1GrW09O0)",
         "height": 192,
         "width": 880
       },
