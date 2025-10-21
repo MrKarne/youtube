@@ -198,7 +198,7 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        896,
+        976,
         80
       ],
       "id": "00b61275-8615-4b60-b891-32a16c5da3fb",
@@ -239,8 +239,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1120,
-        0
+        1168,
+        80
       ],
       "id": "2323b9c6-666a-4010-9553-7d20a5a24de0",
       "name": "If"
@@ -261,8 +261,8 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        1344,
-        -48
+        1648,
+        64
       ],
       "id": "42490359-8b47-4f95-aedf-54fccb7c9fce",
       "name": "Create post",
@@ -278,7 +278,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1344,
+        1328,
         176
       ],
       "id": "98b226a8-ba10-4976-91de-cf503954c53e",
@@ -294,12 +294,74 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        224,
-        -192
+        208,
+        -272
       ],
       "typeVersion": 1,
       "id": "3e5b2a4c-2eb0-4f51-b1fa-45f2621b3991",
       "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Collect the Script and Organize",
+        "height": 240,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        16
+      ],
+      "id": "dde386af-f2e7-4c5f-9d93-fd3dde71ae85",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Create Carousel",
+        "height": 240,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        592,
+        16
+      ],
+      "id": "a5833a6f-5a95-48f0-a7ca-a44db24d333a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Check if Carousel has been generated and wait if not generated yet. If generated, break the loop",
+        "height": 368,
+        "width": 624,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "2b951011-ba3e-4c4c-8bf8-65692e2a8b56",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Upload the Carousel to Instagram",
+        "height": 352,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        -32
+      ],
+      "id": "23fab82a-854c-4cb5-ace2-2b495736b422",
+      "name": "Sticky Note4"
     }
   ],
   "connections": {
