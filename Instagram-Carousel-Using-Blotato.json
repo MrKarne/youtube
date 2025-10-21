@@ -5,142 +5,17 @@
         "resource": "video",
         "templateId": {
           "__rl": true,
-          "value": "/base/v2/quote-card/f941e306-76f7-45da-b3d9-7463af630e91/v1",
+          "value": "/base/v2/tweet-card/ba413be6-a840-4e60-8fd6-0066d3b427df/v1",
           "mode": "list",
-          "cachedResultName": "Quote Card Carousel with Paper Background and Highlight"
+          "cachedResultName": "Twitter/X style quote cards with minimal style"
         },
         "templateInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "font": "Roboto Mono",
-            "paperBackground": "Light paper",
-            "aspectRatio": "1:1",
-            "title": "Truths about Life",
-            "highlighterColor": "#ffff00",
-            "quotes": "={{ $json.filteredStrings.toJsonString() }}"
+            "verified": false
           },
           "matchingColumns": [],
           "schema": [
-            {
-              "id": "font",
-              "displayName": "Font",
-              "required": false,
-              "defaultMatch": false,
-              "type": "options",
-              "display": true,
-              "canBeUsedToMatch": false,
-              "options": [
-                {
-                  "name": "Inter",
-                  "value": "Inter"
-                },
-                {
-                  "name": "Merriweather",
-                  "value": "Merriweather"
-                },
-                {
-                  "name": "Roboto Mono",
-                  "value": "Roboto Mono"
-                },
-                {
-                  "name": "VT323",
-                  "value": "VT323"
-                },
-                {
-                  "name": "Montserrat",
-                  "value": "Montserrat"
-                },
-                {
-                  "name": "Quicksand",
-                  "value": "Quicksand"
-                },
-                {
-                  "name": "Philosopher",
-                  "value": "Philosopher"
-                },
-                {
-                  "name": "Poppins",
-                  "value": "Poppins"
-                },
-                {
-                  "name": "Raleway",
-                  "value": "Raleway"
-                },
-                {
-                  "name": "Open Sans",
-                  "value": "Open Sans"
-                },
-                {
-                  "name": "Lato",
-                  "value": "Lato"
-                },
-                {
-                  "name": "Oswald",
-                  "value": "Oswald"
-                },
-                {
-                  "name": "Playfair Display",
-                  "value": "Playfair Display"
-                },
-                {
-                  "name": "Roboto",
-                  "value": "Roboto"
-                },
-                {
-                  "name": "PT Sans",
-                  "value": "PT Sans"
-                },
-                {
-                  "name": "DM Sans",
-                  "value": "DM Sans"
-                },
-                {
-                  "name": "Nunito",
-                  "value": "Nunito"
-                },
-                {
-                  "name": "Comfortaa",
-                  "value": "Comfortaa"
-                },
-                {
-                  "name": "Work Sans",
-                  "value": "Work Sans"
-                },
-                {
-                  "name": "Fjalla One",
-                  "value": "Fjalla One"
-                },
-                {
-                  "name": "Rubik",
-                  "value": "Rubik"
-                },
-                {
-                  "name": "Barlow",
-                  "value": "Barlow"
-                },
-                {
-                  "name": "Bebas Neue",
-                  "value": "Bebas Neue"
-                },
-                {
-                  "name": "Caveat",
-                  "value": "Caveat"
-                },
-                {
-                  "name": "Pacifico",
-                  "value": "Pacifico"
-                }
-              ]
-            },
-            {
-              "id": "title",
-              "displayName": "Title",
-              "required": false,
-              "defaultMatch": false,
-              "type": "string",
-              "display": true,
-              "canBeUsedToMatch": false
-            },
             {
               "id": "quotes",
               "displayName": "Quotes (e.g. [\"item 1\", \"item 2\"])",
@@ -151,8 +26,8 @@
               "canBeUsedToMatch": false
             },
             {
-              "id": "highlighterColor",
-              "displayName": "Highlighter Color",
+              "id": "authorName",
+              "displayName": "Name",
               "required": false,
               "defaultMatch": false,
               "type": "string",
@@ -160,8 +35,35 @@
               "canBeUsedToMatch": false
             },
             {
-              "id": "paperBackground",
-              "displayName": "Paper Background",
+              "id": "handle",
+              "displayName": "Social Media Handle",
+              "required": false,
+              "defaultMatch": false,
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "profileImage",
+              "displayName": "Profile Photo URL (publicly accessible URL)",
+              "required": false,
+              "defaultMatch": false,
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "verified",
+              "displayName": "Show Verified Badge",
+              "required": false,
+              "defaultMatch": false,
+              "type": "boolean",
+              "display": true,
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "theme",
+              "displayName": "Theme",
               "required": false,
               "defaultMatch": false,
               "type": "options",
@@ -169,16 +71,12 @@
               "canBeUsedToMatch": false,
               "options": [
                 {
-                  "name": "White paper",
-                  "value": "White paper"
+                  "name": "Dark",
+                  "value": "dark"
                 },
                 {
-                  "name": "Yellow paper",
-                  "value": "Yellow paper"
-                },
-                {
-                  "name": "Light paper",
-                  "value": "Light paper"
+                  "name": "Light",
+                  "value": "light"
                 }
               ]
             },
@@ -213,10 +111,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -224,
-        208
+        672,
+        80
       ],
-      "id": "cb9b95f6-ce44-4f50-83ae-956edc909b77",
+      "id": "17bd6387-0304-4aec-aa1d-7524e70658d7",
       "name": "Create video",
       "credentials": {
         "blotatoApi": {
@@ -271,10 +169,10 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
-        -672,
-        208
+        224,
+        80
       ],
-      "id": "654ee839-4062-4cb0-834c-a7c0e626d19c",
+      "id": "fd494754-be07-4918-9fcf-d2d3e70b217e",
       "name": "On form submission",
       "webhookId": "eca4a5bd-7a5e-43f9-9d32-f7ea7f274a1d"
     },
@@ -285,10 +183,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -448,
-        208
+        448,
+        80
       ],
-      "id": "9019f8f4-3339-42b5-801b-e7671e019477",
+      "id": "3523c9bc-85cd-4417-ad09-fcd26c8e7e76",
       "name": "Code"
     },
     {
@@ -300,10 +198,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        0,
-        208
+        896,
+        80
       ],
-      "id": "ffd822e3-414e-477c-b7ae-c7208d2fb495",
+      "id": "00b61275-8615-4b60-b891-32a16c5da3fb",
       "name": "Get video",
       "credentials": {
         "blotatoApi": {
@@ -341,10 +239,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        224,
-        128
+        1120,
+        0
       ],
-      "id": "2a52a91f-40a0-4d4f-9e70-ac58d3a1a910",
+      "id": "2323b9c6-666a-4010-9553-7d20a5a24de0",
       "name": "If"
     },
     {
@@ -363,10 +261,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        448,
-        80
+        1344,
+        -48
       ],
-      "id": "dad50a01-ed6d-4b19-908c-3e91be422b33",
+      "id": "42490359-8b47-4f95-aedf-54fccb7c9fce",
       "name": "Create post",
       "credentials": {
         "blotatoApi": {
@@ -380,27 +278,27 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        448,
-        304
+        1344,
+        176
       ],
-      "id": "052f8d75-2900-47aa-a973-a6660e7ec932",
+      "id": "98b226a8-ba10-4976-91de-cf503954c53e",
       "name": "Wait",
       "webhookId": "8478aa02-58ee-4cf5-b881-0667751256d7"
     },
     {
       "parameters": {
-        "content": "## Step one: Install Blotato node\n## Step Two: [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n## Step Three: Configure the Blotato API in n8n\n## Step Four: Take advantage of the Automation\n",
-        "height": 192,
-        "width": 592,
+        "content": "## Step one: Install Blotato node\n## Step Two: [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n## Step Three: Configure the Blotato API in n8n\n## Step Four: Take advantage of the Automation\n\n## Youtube Tutorial: https://youtu.be/rh4auJBjeDk",
+        "height": 240,
+        "width": 624,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -656,
-        -16
+        224,
+        -192
       ],
       "typeVersion": 1,
-      "id": "c3425544-e313-4244-acc1-75091b73819f",
+      "id": "3e5b2a4c-2eb0-4f51-b1fa-45f2621b3991",
       "name": "Sticky Note"
     }
   ],
@@ -467,11 +365,6 @@
         ]
       ]
     },
-    "Create post": {
-      "main": [
-        []
-      ]
-    },
     "Wait": {
       "main": [
         [
@@ -486,7 +379,6 @@
   },
   "pinData": {},
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
   }
 }
