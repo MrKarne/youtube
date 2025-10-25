@@ -1,0 +1,360 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1dtxL8s3cFLJ1s4qJ25NCmT_zHDqC8CVd",
+          "mode": "list",
+          "cachedResultName": "Content Automation",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1dtxL8s3cFLJ1s4qJ25NCmT_zHDqC8CVd"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        912
+      ],
+      "id": "9fdc9833-620c-49d6-b829-c213c00c9b85",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "g6wbb0RP32sXvLAr",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -864,
+        912
+      ],
+      "id": "6f809d2f-8ac2-42c1-97e7-034ba3cabc1c",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "g6wbb0RP32sXvLAr",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "useBinaryData": true
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        912
+      ],
+      "id": "c6826ea2-02b8-49ec-88cc-07324188f851",
+      "name": "Upload media",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "platform": "linkedin",
+        "accountId": {
+          "__rl": true,
+          "value": "7768",
+          "mode": "list",
+          "cachedResultName": "Brocoli Avacado",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/7768"
+        },
+        "postContentText": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "postContentMediaUrls": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        528
+      ],
+      "id": "2b914dda-1ef1-432c-880f-7b0eebd6b2db",
+      "name": "Linkedin",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "accountId": {
+          "__rl": true,
+          "value": "17066",
+          "mode": "list",
+          "cachedResultName": "broccoliavacado",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/17066"
+        },
+        "postContentText": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "postContentMediaUrls": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        720
+      ],
+      "id": "fdf521a0-b945-4ee6-a640-aefbbb3268b2",
+      "name": "Instagram",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "platform": "facebook",
+        "accountId": {
+          "__rl": true,
+          "value": "12030",
+          "mode": "list",
+          "cachedResultName": "Brocoli Avacado",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/12030"
+        },
+        "postContentText": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "postContentMediaUrls": "={{ $json.url }}",
+        "facebookPageId": {
+          "__rl": true,
+          "value": "717325074795582",
+          "mode": "list",
+          "cachedResultName": "Brocussy",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/12030/subaccounts/717325074795582"
+        },
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        912
+      ],
+      "id": "a2230e69-904b-4604-aa2b-749d5f5f2c59",
+      "name": "Facebook",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "platform": "twitter",
+        "accountId": {
+          "__rl": true,
+          "value": "8007",
+          "mode": "list",
+          "cachedResultName": "BroccoliAvacado",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/8007"
+        },
+        "postContentText": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "postContentMediaUrls": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        1104
+      ],
+      "id": "dd6ab15d-4c15-4604-aa7a-839143ddc312",
+      "name": "Twitter",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "platform": "youtube",
+        "accountId": {
+          "__rl": true,
+          "value": "15614",
+          "mode": "list",
+          "cachedResultName": "Brocoli Avacado (Brocoli Avacado)",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/15614"
+        },
+        "postContentText": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "postContentMediaUrls": "={{ $json.url }}",
+        "postCreateYoutubeOptionTitle": "={{ $('Google Drive Trigger').item.json.name.slice(0, $('Google Drive Trigger').item.json.name.lastIndexOf('.')) }}",
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        1296
+      ],
+      "id": "4142d21f-32ee-4ae2-aaca-5c4ca775b5d6",
+      "name": "Youtube",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Start workflow when a new file in uploaded to google drive\n",
+        "height": 368,
+        "width": 256,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        736
+      ],
+      "id": "87387ab1-5c1a-4f21-934d-6677fb485770",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Download the file and upload it to Blotato to get a hosted video link\n",
+        "height": 368,
+        "width": 432,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        736
+      ],
+      "id": "4c9a7775-10ed-42d5-bd4c-7f474dda2162",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Upload the video to Social media platforms\n",
+        "height": 1040,
+        "width": 352,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        432
+      ],
+      "id": "d0b4fdaf-e32e-473e-a2e0-4c43a315f382",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Follow these steps\n\n## Install Blotato node if you haven't already\n\n## Sign up at [Blotato](https://blotato.com/?ref=karne) for a free trial\n\n## Create a google drive folder dedicated to this automation and connect it using google cloud console\n\n## Login to all you required social media apps in blotato dashboard\n\n## Configure the API key of blotato in blotato node\n\n## Enjoy",
+        "height": 656,
+        "width": 496,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        560
+      ],
+      "id": "6ed355eb-950a-433c-9985-f3378e8943b5",
+      "name": "Sticky Note3"
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Upload media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload media": {
+      "main": [
+        [
+          {
+            "node": "Linkedin",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instagram",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Facebook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Twitter",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Youtube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
+  }
+}
