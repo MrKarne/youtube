@@ -23,10 +23,10 @@
       "type": "n8n-nodes-base.googleDriveTrigger",
       "typeVersion": 1,
       "position": [
-        -1088,
-        912
+        -704,
+        320
       ],
-      "id": "9fdc9833-620c-49d6-b829-c213c00c9b85",
+      "id": "66f3a7ca-ec98-4a5e-a548-c11b3d2958fa",
       "name": "Google Drive Trigger",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -48,10 +48,10 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -864,
-        912
+        -480,
+        320
       ],
-      "id": "6f809d2f-8ac2-42c1-97e7-034ba3cabc1c",
+      "id": "0988a3df-0c85-45eb-8ba5-ca3fd566e937",
       "name": "Download file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -68,10 +68,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -640,
-        912
+        -256,
+        320
       ],
-      "id": "c6826ea2-02b8-49ec-88cc-07324188f851",
+      "id": "9390b061-6a8e-4cce-8d12-7a2ce2f05c5b",
       "name": "Upload media",
       "credentials": {
         "blotatoApi": {
@@ -97,10 +97,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -128,
-        528
+        256,
+        -80
       ],
-      "id": "2b914dda-1ef1-432c-880f-7b0eebd6b2db",
+      "id": "0e823288-3bb5-4308-aade-5c2d7a27fdc6",
       "name": "Linkedin",
       "credentials": {
         "blotatoApi": {
@@ -125,10 +125,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -128,
-        720
+        256,
+        128
       ],
-      "id": "fdf521a0-b945-4ee6-a640-aefbbb3268b2",
+      "id": "01d29d74-b31f-4275-bcb5-777c0da95339",
       "name": "Instagram",
       "credentials": {
         "blotatoApi": {
@@ -161,10 +161,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -128,
-        912
+        256,
+        320
       ],
-      "id": "a2230e69-904b-4604-aa2b-749d5f5f2c59",
+      "id": "5894a95f-06c0-4251-a348-f3024a64f0ca",
       "name": "Facebook",
       "credentials": {
         "blotatoApi": {
@@ -190,10 +190,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -128,
-        1104
+        256,
+        512
       ],
-      "id": "dd6ab15d-4c15-4604-aa7a-839143ddc312",
+      "id": "bcab4278-8990-444f-95f7-ea3656b3b34a",
       "name": "Twitter",
       "credentials": {
         "blotatoApi": {
@@ -220,10 +220,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        -128,
-        1296
+        256,
+        704
       ],
-      "id": "4142d21f-32ee-4ae2-aaca-5c4ca775b5d6",
+      "id": "9af3a9f8-527f-4109-a7b9-158e1a04ca39",
       "name": "Youtube",
       "credentials": {
         "blotatoApi": {
@@ -242,10 +242,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1168,
-        736
+        -784,
+        144
       ],
-      "id": "87387ab1-5c1a-4f21-934d-6677fb485770",
+      "id": "7d9272f2-a266-4d43-a556-16eac9c1d2f9",
       "name": "Sticky Note"
     },
     {
@@ -258,10 +258,10 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -896,
-        736
+        -512,
+        144
       ],
-      "id": "4c9a7775-10ed-42d5-bd4c-7f474dda2162",
+      "id": "75b1af57-7d94-4e83-ab32-2798f95a0502",
       "name": "Sticky Note1"
     },
     {
@@ -274,26 +274,26 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -272,
-        432
+        112,
+        -176
       ],
-      "id": "d0b4fdaf-e32e-473e-a2e0-4c43a315f382",
+      "id": "061a448f-a584-4d25-9fdf-1630794fbbb8",
       "name": "Sticky Note2"
     },
     {
       "parameters": {
-        "content": "# Follow these steps\n\n## Install Blotato node if you haven't already\n\n## Sign up at [Blotato](https://blotato.com/?ref=karne) for a free trial\n\n## Create a google drive folder dedicated to this automation and connect it using google cloud console\n\n## Login to all you required social media apps in blotato dashboard\n\n## Configure the API key of blotato in blotato node\n\n## Enjoy",
-        "height": 656,
+        "content": "# Follow these steps\n\n## Install Blotato node if you haven't already\n\n## Sign up at [Blotato](https://blotato.com/?ref=karne) for a free trial\n\n## Create a google drive folder dedicated to this automation and connect it using google cloud console\n\n## Login to all you required social media apps in blotato dashboard\n\n## Configure the API key of blotato in blotato node\n\n## Enjoy\n\n# [Youtube Tutorial](https://youtu.be/AejmiT7otgo)",
+        "height": 704,
         "width": 496,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -1696,
-        560
+        -1312,
+        -48
       ],
-      "id": "6ed355eb-950a-433c-9985-f3378e8943b5",
+      "id": "3a923f1b-3823-450d-9313-3c50150b0c4d",
       "name": "Sticky Note3"
     }
   ],
@@ -352,9 +352,143 @@
       ]
     }
   },
-  "pinData": {},
+  "pinData": {
+    "Google Drive Trigger": [
+      {
+        "parents": [
+          "1dtxL8s3cFLJ1s4qJ25NCmT_zHDqC8CVd"
+        ],
+        "lastModifyingUser": {
+          "displayName": "Maneeshwar Karne",
+          "kind": "drive#user",
+          "me": true,
+          "permissionId": "01572432125796190941",
+          "emailAddress": "maneeshwarkarne@gmail.com",
+          "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIKJXKU77wS97ubpzYK17-tQLAzJjkFXruoD1nfqAEO3Nk0ow=s64"
+        },
+        "owners": [
+          {
+            "displayName": "Maneeshwar Karne",
+            "kind": "drive#user",
+            "me": true,
+            "permissionId": "01572432125796190941",
+            "emailAddress": "maneeshwarkarne@gmail.com",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIKJXKU77wS97ubpzYK17-tQLAzJjkFXruoD1nfqAEO3Nk0ow=s64"
+          }
+        ],
+        "permissions": [
+          {
+            "kind": "drive#permission",
+            "id": "01572432125796190941",
+            "type": "user",
+            "emailAddress": "maneeshwarkarne@gmail.com",
+            "role": "owner",
+            "displayName": "Maneeshwar Karne",
+            "photoLink": "https://lh3.googleusercontent.com/a/ACg8ocIKJXKU77wS97ubpzYK17-tQLAzJjkFXruoD1nfqAEO3Nk0ow=s64",
+            "deleted": false,
+            "pendingOwner": false
+          }
+        ],
+        "spaces": [
+          "drive"
+        ],
+        "capabilities": {
+          "canAcceptOwnership": false,
+          "canAddChildren": false,
+          "canAddMyDriveParent": false,
+          "canChangeCopyRequiresWriterPermission": true,
+          "canChangeItemDownloadRestriction": true,
+          "canChangeSecurityUpdateEnabled": false,
+          "canChangeViewersCanCopyContent": true,
+          "canComment": true,
+          "canCopy": true,
+          "canDelete": true,
+          "canDisableInheritedPermissions": false,
+          "canDownload": true,
+          "canEdit": true,
+          "canEnableInheritedPermissions": true,
+          "canListChildren": false,
+          "canModifyContent": true,
+          "canModifyContentRestriction": true,
+          "canModifyEditorContentRestriction": true,
+          "canModifyOwnerContentRestriction": true,
+          "canModifyLabels": false,
+          "canMoveChildrenWithinDrive": false,
+          "canMoveItemIntoTeamDrive": true,
+          "canMoveItemOutOfDrive": true,
+          "canMoveItemWithinDrive": true,
+          "canReadLabels": false,
+          "canReadRevisions": true,
+          "canRemoveChildren": false,
+          "canRemoveContentRestriction": false,
+          "canRemoveMyDriveParent": true,
+          "canRename": true,
+          "canShare": true,
+          "canTrash": true,
+          "canUntrash": true
+        },
+        "permissionIds": [
+          "01572432125796190941"
+        ],
+        "videoMediaMetadata": {
+          "width": 720,
+          "height": 1280,
+          "durationMillis": "21824"
+        },
+        "linkShareMetadata": {
+          "securityUpdateEligible": false,
+          "securityUpdateEnabled": true
+        },
+        "downloadRestrictions": {
+          "itemDownloadRestriction": {
+            "restrictedForReaders": false,
+            "restrictedForWriters": false
+          },
+          "effectiveDownloadRestrictionWithContext": {
+            "restrictedForReaders": false,
+            "restrictedForWriters": false
+          }
+        },
+        "kind": "drive#file",
+        "id": "1_YcuVNv47op8PrGU_TT7owIjKiP8Nj76",
+        "name": "The Video Caption.mp4",
+        "mimeType": "video/mp4",
+        "starred": false,
+        "trashed": false,
+        "explicitlyTrashed": false,
+        "version": "6",
+        "webContentLink": "https://drive.google.com/uc?id=1_YcuVNv47op8PrGU_TT7owIjKiP8Nj76&export=download",
+        "webViewLink": "https://drive.google.com/file/d/1_YcuVNv47op8PrGU_TT7owIjKiP8Nj76/view?usp=drivesdk",
+        "iconLink": "https://drive-thirdparty.googleusercontent.com/16/type/video/mp4",
+        "hasThumbnail": true,
+        "thumbnailLink": "https://lh3.googleusercontent.com/drive-storage/AJQWtBO1UyekTuKV-sMsGiMZosJoI5YGZmQFRN9hggklT0kq_PkxKsTft0yFM5QOCtwPzbVYRiKwW7c-CeBm0aEG1qpbhRXwKD9UbJXmMTMdlHNvVws=s220",
+        "thumbnailVersion": "1",
+        "viewedByMe": true,
+        "viewedByMeTime": "2025-10-25T16:46:35.469Z",
+        "createdTime": "2025-10-25T16:46:35.469Z",
+        "modifiedTime": "2025-08-17T16:43:46.000Z",
+        "modifiedByMeTime": "2025-08-17T16:43:46.000Z",
+        "modifiedByMe": true,
+        "shared": false,
+        "ownedByMe": true,
+        "viewersCanCopyContent": true,
+        "copyRequiresWriterPermission": false,
+        "writersCanShare": true,
+        "originalFilename": "The Video Caption.mp4",
+        "fullFileExtension": "mp4",
+        "fileExtension": "mp4",
+        "md5Checksum": "2f604d3eaae36d2217702619e2402cb5",
+        "sha1Checksum": "fd72f03c697679069604ea1ec12a7bf117162422",
+        "sha256Checksum": "5e73b7fb75c25164a9dfb26585ba126cf49f6393ed7f30e4f464137245f974da",
+        "size": "1955901",
+        "quotaBytesUsed": "1955901",
+        "headRevisionId": "0B8VbwGTWgUG6RGZ1NkkzMG1FRUdRVHVMMXQ0dXdvODlpQWNjPQ",
+        "isAppAuthorized": false,
+        "inheritedPermissionsDisabled": false
+      }
+    ]
+  },
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "ce11d2f10d93eff7b3ca4b8b4deb29007d99f7b17b7aa105891971725ff86969"
   }
 }
