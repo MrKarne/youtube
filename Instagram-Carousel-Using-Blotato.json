@@ -5,17 +5,141 @@
         "resource": "video",
         "templateId": {
           "__rl": true,
-          "value": "/base/v2/tweet-card/ba413be6-a840-4e60-8fd6-0066d3b427df/v1",
+          "value": "/base/v2/quote-card/f941e306-76f7-45da-b3d9-7463af630e91/v1",
           "mode": "list",
-          "cachedResultName": "Twitter/X style quote cards with minimal style"
+          "cachedResultName": "Quote Card Carousel with Paper Background and Highlight"
         },
         "templateInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "verified": false
+            "font": "Roboto Mono",
+            "title": "={{ $('On form submission').item.json.Caption }}",
+            "paperBackground": "White paper",
+            "aspectRatio": "1:1",
+            "quotes": "={{ $json.filteredStrings.toJsonString() }}"
           },
           "matchingColumns": [],
           "schema": [
+            {
+              "id": "font",
+              "displayName": "Font",
+              "required": false,
+              "defaultMatch": false,
+              "type": "options",
+              "display": true,
+              "canBeUsedToMatch": false,
+              "options": [
+                {
+                  "name": "Inter",
+                  "value": "Inter"
+                },
+                {
+                  "name": "Merriweather",
+                  "value": "Merriweather"
+                },
+                {
+                  "name": "Roboto Mono",
+                  "value": "Roboto Mono"
+                },
+                {
+                  "name": "VT323",
+                  "value": "VT323"
+                },
+                {
+                  "name": "Montserrat",
+                  "value": "Montserrat"
+                },
+                {
+                  "name": "Quicksand",
+                  "value": "Quicksand"
+                },
+                {
+                  "name": "Philosopher",
+                  "value": "Philosopher"
+                },
+                {
+                  "name": "Poppins",
+                  "value": "Poppins"
+                },
+                {
+                  "name": "Raleway",
+                  "value": "Raleway"
+                },
+                {
+                  "name": "Open Sans",
+                  "value": "Open Sans"
+                },
+                {
+                  "name": "Lato",
+                  "value": "Lato"
+                },
+                {
+                  "name": "Oswald",
+                  "value": "Oswald"
+                },
+                {
+                  "name": "Playfair Display",
+                  "value": "Playfair Display"
+                },
+                {
+                  "name": "Roboto",
+                  "value": "Roboto"
+                },
+                {
+                  "name": "PT Sans",
+                  "value": "PT Sans"
+                },
+                {
+                  "name": "DM Sans",
+                  "value": "DM Sans"
+                },
+                {
+                  "name": "Nunito",
+                  "value": "Nunito"
+                },
+                {
+                  "name": "Comfortaa",
+                  "value": "Comfortaa"
+                },
+                {
+                  "name": "Work Sans",
+                  "value": "Work Sans"
+                },
+                {
+                  "name": "Fjalla One",
+                  "value": "Fjalla One"
+                },
+                {
+                  "name": "Rubik",
+                  "value": "Rubik"
+                },
+                {
+                  "name": "Barlow",
+                  "value": "Barlow"
+                },
+                {
+                  "name": "Bebas Neue",
+                  "value": "Bebas Neue"
+                },
+                {
+                  "name": "Caveat",
+                  "value": "Caveat"
+                },
+                {
+                  "name": "Pacifico",
+                  "value": "Pacifico"
+                }
+              ]
+            },
+            {
+              "id": "title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "type": "string",
+              "display": true,
+              "canBeUsedToMatch": false
+            },
             {
               "id": "quotes",
               "displayName": "Quotes (e.g. [\"item 1\", \"item 2\"])",
@@ -26,44 +150,18 @@
               "canBeUsedToMatch": false
             },
             {
-              "id": "authorName",
-              "displayName": "Name",
+              "id": "highlighterColor",
+              "displayName": "Highlighter Color",
               "required": false,
               "defaultMatch": false,
               "type": "string",
               "display": true,
-              "canBeUsedToMatch": false
+              "canBeUsedToMatch": false,
+              "removed": true
             },
             {
-              "id": "handle",
-              "displayName": "Social Media Handle",
-              "required": false,
-              "defaultMatch": false,
-              "type": "string",
-              "display": true,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "profileImage",
-              "displayName": "Profile Photo URL (publicly accessible URL)",
-              "required": false,
-              "defaultMatch": false,
-              "type": "string",
-              "display": true,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "verified",
-              "displayName": "Show Verified Badge",
-              "required": false,
-              "defaultMatch": false,
-              "type": "boolean",
-              "display": true,
-              "canBeUsedToMatch": false
-            },
-            {
-              "id": "theme",
-              "displayName": "Theme",
+              "id": "paperBackground",
+              "displayName": "Paper Background",
               "required": false,
               "defaultMatch": false,
               "type": "options",
@@ -71,12 +169,16 @@
               "canBeUsedToMatch": false,
               "options": [
                 {
-                  "name": "Dark",
-                  "value": "dark"
+                  "name": "White paper",
+                  "value": "White paper"
                 },
                 {
-                  "name": "Light",
-                  "value": "light"
+                  "name": "Yellow paper",
+                  "value": "Yellow paper"
+                },
+                {
+                  "name": "Light paper",
+                  "value": "Light paper"
                 }
               ]
             },
@@ -111,10 +213,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        672,
-        80
+        -464,
+        496
       ],
-      "id": "17bd6387-0304-4aec-aa1d-7524e70658d7",
+      "id": "0cf96a53-fba5-4ace-94bf-88c8c5a4cc98",
       "name": "Create video",
       "credentials": {
         "blotatoApi": {
@@ -169,25 +271,12 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.2,
       "position": [
-        224,
-        80
+        -912,
+        496
       ],
-      "id": "fd494754-be07-4918-9fcf-d2d3e70b217e",
+      "id": "8daa37c7-b0a6-480d-9a84-ab28564441db",
       "name": "On form submission",
       "webhookId": "eca4a5bd-7a5e-43f9-9d32-f7ea7f274a1d"
-    },
-    {
-      "parameters": {
-        "jsCode": "const inputData = items[0].json;\nconst keysToExclude = [\"submittedAt\", \"formMode\",\"Caption\"];\n\n// Initialize an array to hold only the extracted string values\nconst stringValues = [];\n\n// Iterate and filter values as before\nfor (const key in inputData) {\n  if (inputData.hasOwnProperty(key)) {\n    // Skip excluded keys or keys containing \"First\"\n    if (keysToExclude.includes(key) || key.includes(\"First\")) {\n      continue;\n    }\n\n    const value = inputData[key];\n\n    // Check if the value is a non-empty string\n    if (typeof value === 'string' && value.trim() !== '') {\n      stringValues.push(value);\n    }\n  }\n}\n\n// Return a single n8n item containing the array of strings\n// in a new key, for example, \"filteredStrings\".\nreturn [{\n  json: {\n    filteredStrings: stringValues\n  }\n}];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        448,
-        80
-      ],
-      "id": "3523c9bc-85cd-4417-ad09-fcd26c8e7e76",
-      "name": "Code"
     },
     {
       "parameters": {
@@ -198,10 +287,10 @@
       "type": "@blotato/n8n-nodes-blotato.blotato",
       "typeVersion": 2,
       "position": [
-        976,
-        80
+        -160,
+        496
       ],
-      "id": "00b61275-8615-4b60-b891-32a16c5da3fb",
+      "id": "ac7f8b17-0d93-4644-bdd8-c855aa008a01",
       "name": "Get video",
       "credentials": {
         "blotatoApi": {
@@ -209,6 +298,125 @@
           "name": "Blotato account"
         }
       }
+    },
+    {
+      "parameters": {
+        "accountId": {
+          "__rl": true,
+          "value": "17066",
+          "mode": "list",
+          "cachedResultName": "broccoliavacado",
+          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/17066"
+        },
+        "postContentText": "={{ $('On form submission').item.json.Caption }}",
+        "postContentMediaUrls": "={{ $json.item.imageUrls.join(',') }}",
+        "options": {}
+      },
+      "type": "@blotato/n8n-nodes-blotato.blotato",
+      "typeVersion": 2,
+      "position": [
+        512,
+        480
+      ],
+      "id": "a3fd48ec-dd75-4aa9-8b1a-8b5ca2d9f416",
+      "name": "Create post",
+      "credentials": {
+        "blotatoApi": {
+          "id": "F4zL2Ba0CXpJH5NJ",
+          "name": "Blotato account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Step one: Install Blotato node\n## Step Two: [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n## Step Three: Configure the Blotato API in n8n\n## Step Four: Take advantage of the Automation\n\n## Youtube Tutorial: https://youtu.be/rh4auJBjeDk",
+        "height": 240,
+        "width": 624,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -928,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "73023795-c8b5-4ef7-944d-373016905d38",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Collect the Script and Organize",
+        "height": 240,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        432
+      ],
+      "id": "96920713-edd4-4e67-8ea3-4f96766eaeb7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Create Carousel",
+        "height": 240,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        432
+      ],
+      "id": "86760a89-d862-460d-934d-203046112b33",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Check if Carousel has been generated and wait if not generated yet. If generated, break the loop",
+        "height": 368,
+        "width": 624,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        416
+      ],
+      "id": "b9a81967-ec9e-4588-82ea-ca263cdb5ad2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Upload the Carousel to Instagram",
+        "height": 352,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        384
+      ],
+      "id": "ff6cfc77-d89c-48fb-8233-513e941af4f3",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputData = items[0].json;\nconst keysToExclude = [\"submittedAt\", \"formMode\",\"Caption\"];\n\n// Initialize an array to hold only the extracted string values\nconst stringValues = [];\n\n// Iterate and filter values as before\nfor (const key in inputData) {\n  if (inputData.hasOwnProperty(key)) {\n    // Skip excluded keys or keys containing \"First\"\n    if (keysToExclude.includes(key) || key.includes(\"First\")) {\n      continue;\n    }\n\n    const value = inputData[key];\n\n    // Check if the value is a non-empty string\n    if (typeof value === 'string' && value.trim() !== '') {\n      stringValues.push(value);\n    }\n  }\n}\n\n// Return a single n8n item containing the array of strings\n// in a new key, for example, \"filteredStrings\".\nreturn [{\n  json: {\n    filteredStrings: stringValues\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        496
+      ],
+      "id": "ecc2667b-f34a-4bf2-a598-5c359aed5658",
+      "name": "Organize the collected input data"
     },
     {
       "parameters": {
@@ -239,129 +447,23 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        1168,
-        80
+        32,
+        496
       ],
-      "id": "2323b9c6-666a-4010-9553-7d20a5a24de0",
-      "name": "If"
-    },
-    {
-      "parameters": {
-        "accountId": {
-          "__rl": true,
-          "value": "17066",
-          "mode": "list",
-          "cachedResultName": "broccoliavacado",
-          "cachedResultUrl": "https://backend.blotato.com/v2/accounts/17066"
-        },
-        "postContentText": "={{ $('On form submission').item.json.Caption }}",
-        "postContentMediaUrls": "={{ $json.item.imageUrls.join(',') }}",
-        "options": {}
-      },
-      "type": "@blotato/n8n-nodes-blotato.blotato",
-      "typeVersion": 2,
-      "position": [
-        1648,
-        64
-      ],
-      "id": "42490359-8b47-4f95-aedf-54fccb7c9fce",
-      "name": "Create post",
-      "credentials": {
-        "blotatoApi": {
-          "id": "F4zL2Ba0CXpJH5NJ",
-          "name": "Blotato account"
-        }
-      }
+      "id": "7c3e7ac4-2e54-4633-819f-01e8792af59a",
+      "name": "Check if Carousel images are generated"
     },
     {
       "parameters": {},
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        1328,
-        176
+        192,
+        592
       ],
-      "id": "98b226a8-ba10-4976-91de-cf503954c53e",
-      "name": "Wait",
+      "id": "02a4a26a-26bb-4ad4-aa3e-92ab1d460488",
+      "name": "Wait  before checking again",
       "webhookId": "8478aa02-58ee-4cf5-b881-0667751256d7"
-    },
-    {
-      "parameters": {
-        "content": "## Step one: Install Blotato node\n## Step Two: [Click here and Sign up for Blotato](https://blotato.com/?ref=karne)\n## Step Three: Configure the Blotato API in n8n\n## Step Four: Take advantage of the Automation\n\n## Youtube Tutorial: https://youtu.be/rh4auJBjeDk",
-        "height": 240,
-        "width": 624,
-        "color": 4
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "position": [
-        208,
-        -272
-      ],
-      "typeVersion": 1,
-      "id": "3e5b2a4c-2eb0-4f51-b1fa-45f2621b3991",
-      "name": "Sticky Note"
-    },
-    {
-      "parameters": {
-        "content": "## Collect the Script and Organize",
-        "height": 240,
-        "width": 416,
-        "color": 5
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        160,
-        16
-      ],
-      "id": "dde386af-f2e7-4c5f-9d93-fd3dde71ae85",
-      "name": "Sticky Note1"
-    },
-    {
-      "parameters": {
-        "content": "## Create Carousel",
-        "height": 240,
-        "color": 3
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        592,
-        16
-      ],
-      "id": "a5833a6f-5a95-48f0-a7ca-a44db24d333a",
-      "name": "Sticky Note2"
-    },
-    {
-      "parameters": {
-        "content": "## Check if Carousel has been generated and wait if not generated yet. If generated, break the loop",
-        "height": 368,
-        "width": 624,
-        "color": 6
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        896,
-        0
-      ],
-      "id": "2b951011-ba3e-4c4c-8bf8-65692e2a8b56",
-      "name": "Sticky Note3"
-    },
-    {
-      "parameters": {
-        "content": "## Upload the Carousel to Instagram",
-        "height": 352,
-        "width": 304
-      },
-      "type": "n8n-nodes-base.stickyNote",
-      "typeVersion": 1,
-      "position": [
-        1552,
-        -32
-      ],
-      "id": "23fab82a-854c-4cb5-ace2-2b495736b422",
-      "name": "Sticky Note4"
     }
   ],
   "connections": {
@@ -380,18 +482,7 @@
       "main": [
         [
           {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Create video",
+            "node": "Organize the collected input data",
             "type": "main",
             "index": 0
           }
@@ -402,14 +493,25 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Check if Carousel images are generated",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "If": {
+    "Organize the collected input data": {
+      "main": [
+        [
+          {
+            "node": "Create video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Carousel images are generated": {
       "main": [
         [
           {
@@ -420,14 +522,14 @@
         ],
         [
           {
-            "node": "Wait",
+            "node": "Wait  before checking again",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Wait": {
+    "Wait  before checking again": {
       "main": [
         [
           {
